@@ -14,10 +14,6 @@
 ;;--- time model ---------------------------------------
 (defonce my-time (t/create-time-model-one true))
 
-;;--- pause/run processing ------------------------------
-(defonce keyboard-chan (chan))
-
-
 ;;--- business stuff -------------------------------------
 (defn draw-circle [x y r]
   (let [canvas (.getElementById js/document "canvas")
@@ -35,11 +31,35 @@
         h (.-height canvas)]
     (.clearRect cxt 0 0 w h)))
 
+;;--- utils --------------------------------------------------------------
+
+
+;;--- pause/run processing ------------------------------
+(defn create-key-chan
+  []
+  (let [chan-transducer (comp (map #(.-keyCode %))
+                               (filter #{37 39})
+                               (map {37 :<- 39 :->}))
+        c (chan 1 chan-transducer)]
+    (events/listen js/window EventType.KEYDOWN
+                   (fn [e] (put! c e)))
+    c))
+
 ;;--- start simulation ---------------------------------------------------
+
+(defonce key-chan (create-key-chan))
+
+(declare do-job)
+
 (defn start-simulation []
   (go
-    (loop [])))
+    (loop []
+      (let [v (<! key-chan)]
+        (do-job v)
+        (recur)))))
 
+(defn do-job [val]
+  (.log js/console (str "from chanel:" val )))
 
 
 
