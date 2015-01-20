@@ -15,6 +15,17 @@
 ;;--- time model ---------------------------------------
 (defonce my-time (t/create-time-model-one true))
 
+
+
+;;--- domain model -------------------------------------
+(defonce my-obj (atom {a: nil b: nil foo: nil}))
+
+(defn set-domane-state [ {:keys [a b foo]} ]
+  ())
+
+
+
+
 ;;--- business stuff -------------------------------------
 (defn draw-circle [x y r]
   (let [canvas (.getElementById js/document "canvas")
@@ -60,7 +71,10 @@
         (recur)))))
 
 (defn do-job [val]
-  (.log js/console (str "from chanel:" val )))
+  ;(.log js/console (str "from chanel:" val ))
+
+
+  )
 
 
 
