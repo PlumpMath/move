@@ -3,7 +3,8 @@
   (:require
    [cljs.core.async :as async :refer [>! <! put! take! chan alts! timeout dropping-buffer]]
    [goog.events :as events]
-   [move.time :as t ])
+   [move.time :as t ]
+   [clojure.core.reducers :as r])
   (:import [goog.events EventType]))
 
 (def aaa 23)
